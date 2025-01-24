@@ -1,5 +1,7 @@
 import { Audiowide } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import Provider from "./provider";
 
 const audioWide = Audiowide({
   variable: "--font-audiowide",
@@ -14,12 +16,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={audioWide.className} // Applying the Audiowide font globally
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={audioWide.className} // Applying the Audiowide font globally
+        >
+          <Provider>{children}</Provider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
+}
+
+{
+  /*When you define a RootLayout in layout.js, it acts as a wrapper for the pages defined in page.js.
+In Next.js 13 (and later), each page.js is automatically considered a child of the RootLayout.*/
 }
