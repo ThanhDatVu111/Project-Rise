@@ -10,10 +10,10 @@ import {
 
 function TopicInput({ setTopic, setDifficultyLevel }) {
   return (
-    <div className="mt-10 w-full flex flex-col">
+    <div className="mt-5 w-full flex flex-col">
       <h2>
-        Enter topic or paster the content for which you want to generate study
-        material
+        Turn any topic or text into study material—just enter or paste your
+        content!
       </h2>
       <Textarea
         placeholder="Start writing here"
