@@ -2,6 +2,7 @@
 import SideBar from "./_components/SideBar";
 import DashboardHeader from "./_components/DashboardHeader";
 
+{/*This file wraps the entire route and contains UI elements that remain the same across different pages in that route (e.g., navbar, sidebar, footer).*/}
 function DashboardLayout({ children }) {
   return (
       <div>
