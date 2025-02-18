@@ -1,8 +1,4 @@
-const {
-  GoogleGenerativeAI,
-  HarmCategory,
-  HarmBlockThreshold,
-} = require("@google/generative-ai");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
@@ -51,6 +47,26 @@ export const courseOutlineAIModel = model.startChat({
 
 export const generateNotesAiModel = model.startChat({
   generationConfig2,
+  history: [
+    {
+      role: "user",
+      parts: [
+        {
+          text: "Generate exam material detail content for each chapter. Make sure to include structured headings and explanations in HTML format.",
+        },
+      ],
+    },
+    {
+      role: "model",
+      parts: [
+        {
+          text: `<h2>Introduction to Atoms</h2>
+                   <h3>What are atoms?</h3>
+                   <p>Atoms are the basic building blocks of matter...</p>`,
+        },
+      ],
+    },
+  ],
 });
 
 export const GenerateStudyTypeContentAiModel = model.startChat({
