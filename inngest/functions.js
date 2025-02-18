@@ -1,6 +1,7 @@
+import { generateNotesAiModel } from "@/configs/AiModel";
 import { inngest } from "./client";
 import { db } from "@/configs/db";
-import { USER_TABLE } from "@/configs/schema";
+import { CHAPTER_NOTES_TABLE, STUDY_MATERIAL_TABLE, USER_TABLE } from "@/configs/schema";
 import { eq } from "drizzle-orm";
 
 /* 
@@ -52,3 +53,62 @@ export const CreateNewUser = inngest.createFunction(
       : "User already exists in the database.";
   }
 );
+
+export const GenerateNotes = inngest.createFunction(
+  { id: "generate-course", retries: 1 }, // Define function ID and retry attempts
+  { event: "notes.generate" }, // Define the event that triggers this function
+  async ({ event, step }) => {
+    const { course } = event.data; // Extract course information from the event data
+
+    // Step 1: Generate Notes for Each Chapter using AI
+    const notesResult = await step.run("Generate Chapter Notes", async () => {
+      const Chapters = course?.courseLayout?.chapters; // Get the chapters from the course layout
+      let index = 0;
+
+      // Loop through each chapter to generate notes using AI
+      for (const chapter of Chapters) {
+        // Construct the AI prompt dynamically based on the course and chapter content
+        const PROMPT =
+          "Generate " +
+          course?.courseType +
+          " material detail content for each chapter. " +
+          "Make sure to give notes for each topic from the chapters, " +
+          "include code examples if applicable inside <precode> tags, " +
+          "highlight key points, and style each tag appropriately. " +
+          "Provide the response in HTML format (Do not include <html>, <head>, <body>, or <title> tags). " +
+          "The chapter content is: " +
+          JSON.stringify(chapter);
+
+        // Call the AI model to generate notes
+        const result = await generateNotesAiModel.sendMessage(PROMPT);
+        const aiResp = result.response.text(); // Extract AI-generated text response
+
+        console.log(PROMPT); // Log the prompt for debugging
+
+        // Store the generated notes in the database
+        await db.insert(CHAPTER_NOTES_TABLE).values({
+          chapterId: index, // Assign an index to the chapter
+          courseId: course?.courseId, // Link notes to the corresponding course
+          notes: aiResp, // Store the AI-generated notes
+        });
+
+        index = index + 1; // Increment index for the next chapter
+      }
+      return Chapters; // Return processed chapters
+    });
+
+    // Step 2: Update Course Status to 'Ready' after generating notes
+    const updateCourseStatusResult = await step.run(
+      "Update Course Status to Ready",
+      async () => {
+        const result = await db
+          .update(STUDY_MATERIAL_TABLE)
+          .set({ status: "Ready" }) // Mark the course as ready
+          .where(eq(STUDY_MATERIAL_TABLE.courseId, course?.courseId)); // Match the course ID
+
+        return "Success"; // Indicate successful status update
+      }
+    );
+  }
+);
+
