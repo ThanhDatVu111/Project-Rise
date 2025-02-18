@@ -1,6 +1,6 @@
 import { serve } from "inngest/next";
 import { inngest } from "../../../inngest/client";
-import { CreateNewUser } from "@/inngest/functions";
+import { CreateNewUser, GenerateNotes } from "@/inngest/functions";
 export const runtime = "edge";
 {
   /*This file sets up an API route (/api/inngest/route.js) that allows handling HTTP GET, POST, and PUT requests. 
@@ -15,5 +15,6 @@ export const { GET, POST, PUT } = serve({
   functions: [
     /* your functions will be passed here later! */
     CreateNewUser,
+    GenerateNotes,
   ],
 });
