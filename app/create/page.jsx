@@ -6,22 +6,21 @@ import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 const { v4: uuidv4 } = require("uuid");
 import { Loader2 } from "lucide-react"; // Example from Lucide Icons
 
-
-  /**
-   * Creates a course outline based on user input.
-   *
-   * - State variables: step, formData, user, loading, and router.
-   * - Steps:
-   *   - Step 0: Select study type.
-   *   - Step 1: Enter topic and select difficulty level.
-   * - handleUserInput: Handles user input and updates formData.
-   * - GenerateCourseOutline: Submits form data to API and redirects to dashboard.
-   * @returns A JSX element with a form and buttons to navigate and generate the course outline.
-   */
+/**
+ * Creates a course outline based on user input.
+ *
+ * - State variables: step, formData, user, loading, and router.
+ * - Steps:
+ *   - Step 0: Select study type.
+ *   - Step 1: Enter topic and select difficulty level.
+ * - handleUserInput: Handles user input and updates formData.
+ * - GenerateCourseOutline: Submits form data to API and redirects to dashboard.
+ * @returns A JSX element with a form and buttons to navigate and generate the course outline.
+ */
 
 function Create() {
   const [step, setStep] = useState(0);
@@ -29,7 +28,7 @@ function Create() {
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
+  const { toast } = useToast();
 
   // handleUserInput provides a reusable function to update any field dynamically.
   const handleUserInput = (fieldName, fieldValue) => {
@@ -59,19 +58,25 @@ function Create() {
       });
 
       console.log("✅ API Response:", result.data);
-
       setLoading(false);
       router.replace("/dashboard");
-      toast("Your course content is generating, Click on Refresh Button");
-
+      // Show a toast notification
+      toast({
+        title: "Course Generation Started",
+        description:
+          "Your course content is generating. Click on the Refresh button.",
+      });
       console.log("📚 Course generated successfully:", result.data.result.resp);
     } catch (error) {
       console.error("❌ API Request Failed:", error.response?.data || error);
-      toast("Error generating course. Please try again.");
+      // Show an error toast notification
+      toast({
+        title: "Error",
+        description: "Error generating course. Please try again.",
+      });
       setLoading(false);
     }
   };
-
 
   return (
     <div className="flex flex-col items-center p-5 md:px-24 lg:px-36 mt-20">

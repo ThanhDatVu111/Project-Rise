@@ -2,6 +2,7 @@ import { Audiowide } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Provider from "./provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const audioWide = Audiowide({
   variable: "--font-audiowide",
@@ -21,7 +22,10 @@ export default function RootLayout({ children }) {
         <body
           className={audioWide.className} // Applying the Audiowide font globally
         >
-          <Provider>{children}</Provider>
+          <Provider>
+            <main>{children}</main>
+            <Toaster />
+          </Provider>
         </body>
       </html>
     </ClerkProvider>
