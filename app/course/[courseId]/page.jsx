@@ -31,6 +31,7 @@ function Course() {
         {/* Study Materials Options  */}
         <StudyMaterialSection courseId={courseId} course={course} /> 
         {/* Chapter List  */}
+        <ChapterList course={course} />
         {/* <ChapterList course={course} /> */}
       </div>
     </div>
