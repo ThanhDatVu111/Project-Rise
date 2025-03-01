@@ -31,7 +31,7 @@ function CourseCardItem({ course }) {
               Generating...
             </h2>
           ) : (
-            <Link href={"/course/" + course?.courseId}>
+            <Link href={"/course/" + course?.courseId}> {/* Link to the course page with the course ID when the user click view */}
               <Button>View</Button>
             </Link>
           )}
