@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MaterialCardItem from "./MaterialCardItem";
-import { db } from "@/configs/db";
 import axios from "axios";
-import Link from "next/link";
-
 function StudyMaterialSection({ courseId, course }) {
   const [studyTypeContent, setStudyTypeContent] = useState();
   const MaterialList = [
@@ -37,24 +34,22 @@ function StudyMaterialSection({ courseId, course }) {
     },
   ];
 
-//   useEffect(() => {
-//     GetStudyMaterial();
-//   }, [courseId]);
+  useEffect(() => {
+    GetStudyMaterial();
+  }, [courseId]);
 
-//   const GetStudyMaterial = async () => {
-//     const result = await axios.post("/api/study-type", {
-//       courseId: courseId,
-//       studyType: "ALL",
-//     });
-
-//     console.log(result?.data);
-//     setStudyTypeContent(result.data);
-//   };
+  const GetStudyMaterial = async () => {
+    const result = await axios.post("/api/study-type", { //api call to get study material
+      courseId: courseId,
+      studyType: "ALL",
+    });
+    console.log(result?.data);
+    setStudyTypeContent(result.data); //update studyTypeContent
+  };
 
   return (
     <div className="mt-5">
       <h2 className="font-medium text-xl">Study Material</h2>
-
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-3">
         {MaterialList.map((item, index) => (
           <MaterialCardItem
