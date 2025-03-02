@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
-import axios from "axios";
-import { RefreshCcw } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import React, { useState } from "react";
-import { toast } from "sonner";
-
 function MaterialCardItem({ item, studyTypeContent, course, refreshData }) {
   // const [loading, setLoading] = useState(false);
   // const GenerateContent = async () => {
@@ -32,11 +26,20 @@ function MaterialCardItem({ item, studyTypeContent, course, refreshData }) {
 
   return (
     <div
-      className={`border shadow-md rounded-lg p-5 flex flex-col items-center`}
+      className={`border shadow-md rounded-lg p-5 flex flex-col items-center
+      ${studyTypeContent?.[item.type]?.length == 0 && "grayscale"}
+    `}
     >
-      <h2 className="p-1 px-2 bg-green-500 text-white rounded-full text-[10px] mb-2">
-        Ready
-      </h2>
+      {studyTypeContent?.[item.type]?.length == 0 ? (
+        <h2 className="p-1 px-2 bg-gray-500 text-white rounded-full text-[10px] mb-2">
+          Generate
+        </h2>
+      ) : (
+        <h2 className="p-1 px-2 bg-green-500 text-white rounded-full text-[10px] mb-2">
+          Ready
+        </h2>
+      )}
+
       <Image src={item.icon} alt={item.name} width={50} height={50} />
       <h2 className="font-medium mt-3">{item.name}</h2>
       <p className="text-gray-500 text-sm text-center">{item.desc}</p>
