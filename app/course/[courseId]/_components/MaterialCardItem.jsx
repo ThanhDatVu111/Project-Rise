@@ -1,4 +1,7 @@
+"use client";
+import React from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import Image from "next/image";
 function MaterialCardItem({ item, studyTypeContent, course, refreshData }) {
   // const [loading, setLoading] = useState(false);
@@ -43,9 +46,11 @@ function MaterialCardItem({ item, studyTypeContent, course, refreshData }) {
       <Image src={item.icon} alt={item.name} width={50} height={50} />
       <h2 className="font-medium mt-3">{item.name}</h2>
       <p className="text-gray-500 text-sm text-center">{item.desc}</p>
-      <Button className="mt-3 w-full" variant="outline">
-        View
-      </Button>
+      <Link href={"/course/" + course?.courseId + item.path}>
+        <Button className="mt-3 w-full" variant="outline">
+          View
+        </Button>
+      </Link>
     </div>
   );
 }
