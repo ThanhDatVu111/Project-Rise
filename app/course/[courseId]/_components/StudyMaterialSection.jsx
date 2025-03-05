@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import MaterialCardItem from "./MaterialCardItem";
 import axios from "axios";
+import { Link } from "lucide-react";
 function StudyMaterialSection({ courseId, course }) {
   const [studyTypeContent, setStudyTypeContent] = useState();
   const MaterialList = [
@@ -39,7 +40,8 @@ function StudyMaterialSection({ courseId, course }) {
   }, [courseId]);
 
   const GetStudyMaterial = async () => {
-    const result = await axios.post("/api/study-type", { //api call to get study material
+    const result = await axios.post("/api/study-type", {
+      //api call to get study material
       courseId: courseId,
       studyType: "ALL",
     });
