@@ -14,13 +14,6 @@ export async function POST(req) {
       .select()
       .from(CHAPTER_NOTES_TABLE)
       .where(eq(CHAPTER_NOTES_TABLE?.courseId, courseId));
-
-    // Get The All Other Study Type Records
-    // const contentList = await db
-    //   .select()
-    //   .from(STUDY_TYPE_CONTENT_TABLE)
-    //   .where(eq(STUDY_TYPE_CONTENT_TABLE?.courseId, courseId));
-
     const result = {
       notes: notes,
       flashcard: [],
@@ -28,5 +21,8 @@ export async function POST(req) {
       qa: [],
     };
     return NextResponse.json(result);
+  } else if (studyType == "notes") {
+    const notes = await db.select().from(CHAPTER_NOTES_TABLE);
+    return NextResponse.json(notes);
   }
 }
