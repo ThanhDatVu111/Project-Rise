@@ -1,7 +1,6 @@
 import React, { use, useEffect, useState } from "react";
 import MaterialCardItem from "./MaterialCardItem";
 import axios from "axios";
-import { Link } from "lucide-react";
 function StudyMaterialSection({ courseId, course }) {
   const [studyTypeContent, setStudyTypeContent] = useState();
   const MaterialList = [
@@ -59,7 +58,7 @@ function StudyMaterialSection({ courseId, course }) {
             key={index}
             studyTypeContent={studyTypeContent}
             course={course}
-            //refreshData={GetStudyMaterial}
+            refreshData={GetStudyMaterial}
           />
         ))}
       </div>
