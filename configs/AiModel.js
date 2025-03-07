@@ -69,7 +69,7 @@ export const generateNotesAiModel = model.startChat({
   ],
 });
 
-export const GenerateStudyTypeContentAiModel = model.startChat({
+export const GenerateFlashcardAiModel = model.startChat({
   generationConfig,
   history: [
     {
