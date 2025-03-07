@@ -42,15 +42,7 @@ function MaterialCardItem({ item, studyTypeContent, course, refreshData }) {
       ${studyTypeContent?.[item.type]?.length == 0 && "grayscale"}
     `}
     >
-      {/* {
-          "notes": [{ "title": "Chapter 1", "content": "..." }],
-          "flashcard": [],
-          "quiz": [],
-          "qa": []
-          }
-          "notes" has one entry, meaning notes exist.
-          "flashcard", "quiz", and "qa" are empty arrays, meaning they haven't been generated yet.
-      */}
+      {/* if nothing in the item in studyTypeContent then show the generate else show ready */}
       {studyTypeContent?.[item.type]?.length == 0 ? (
         <h2 className="p-1 px-2 bg-gray-500 text-white rounded-full text-[10px] mb-2">
           Generate
@@ -61,9 +53,20 @@ function MaterialCardItem({ item, studyTypeContent, course, refreshData }) {
         </h2>
       )}
 
+      {/*icon for each item */}
       <Image src={item.icon} alt={item.name} width={50} height={50} />
       <h2 className="font-medium mt-3">{item.name}</h2>
       <p className="text-gray-500 text-sm text-center">{item.desc}</p>
+
+      {/* {
+          "notes": [{ "title": "Chapter 1", "content": "..." }],
+          "flashcard": [],
+          "quiz": [],
+          "qa": []
+          }
+          "notes" has one entry, meaning notes exist.
+          "flashcard", "quiz", and "qa" are empty arrays, meaning they haven't been generated yet.
+      */}
 
       {studyTypeContent?.[item.type]?.length == 0 ? (
         <Button
