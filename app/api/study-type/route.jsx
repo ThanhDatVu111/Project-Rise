@@ -1,5 +1,8 @@
 import { db } from "@/configs/db";
-import { CHAPTER_NOTES_TABLE, STUDY_TYPE_CONTENT_TABLE } from "@/configs/schema";
+import {
+  CHAPTER_NOTES_TABLE,
+  STUDY_TYPE_CONTENT_TABLE,
+} from "@/configs/schema";
 import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -34,5 +37,16 @@ export async function POST(req) {
   } else if (studyType == "notes") {
     const notes = await db.select().from(CHAPTER_NOTES_TABLE);
     return NextResponse.json(notes);
+  } else {
+    const result = await db
+      .select()
+      .from(STUDY_TYPE_CONTENT_TABLE)
+      .where(
+        and(
+          eq(STUDY_TYPE_CONTENT_TABLE?.courseId, courseId),
+          eq(STUDY_TYPE_CONTENT_TABLE.type, studyType)
+        )
+      );
+    return NextResponse.json(result[0] ?? []);
   }
 }
