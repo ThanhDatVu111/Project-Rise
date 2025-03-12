@@ -121,37 +121,61 @@ export const GenerateNotes = inngest.createFunction(
   }
 );
 
-// Used to generate Flashcard, Quiz, Question Answer
+// Generate Study Type Content
 export const GenerateStudyTypeContent = inngest.createFunction(
   { id: "Generate Study Type Content", retries: 1 },
-  { event: "studyType.content" }, // Define the event that triggers this function
+  { event: "studyType.content" }, // Event trigger
 
   async ({ event, step }) => {
     const { studyType, prompt, courseId, recordId } = event.data;
+    let AiResult = null; // Initialize AI result
 
-    // Generate Study Type Content
-    if (studyType === "Flashcard") {
-      AiResult = await step.run("Generating Flashcards using AI", async () => {
-        const result = await GenerateFlashcardAiModel.sendMessage(prompt);
-        return JSON.parse(result.response.text());
+    // Generate Study Type Content safely
+    try {
+      if (studyType === "Flashcard") {
+        AiResult = await step.run(
+            "Generating Flashcards using AI",
+            async () => {
+            const result = await GenerateFlashcardAiModel.sendMessage(prompt);
+            return JSON.parse(result.response.text());
+          }
+        );
+      } else if (studyType === "Quiz") {
+        AiResult = await step.run(
+            "Generating Quiz using AI", 
+            async () => {
+            const result = await GenerateQuizAiModel.sendMessage(prompt);
+            return JSON.parse(result.response.text());
+          }
+        );
+      } else {
+        throw new Error(`Unsupported studyType: ${studyType}`);
+      }
+    } catch (error) {
+      console.error(`AI generation failed for ${studyType}`, error);
+      await step.run("Update DB - Failed Generation", async () => {
+        await db
+          .update(STUDY_TYPE_CONTENT_TABLE)
+          .set({
+            content: null,
+            status: "Failed",
+            error: error.message,
+          })
+          .where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId));
       });
-    } else if (studyType === "Quiz") {
-      AiResult = await step.run("Generating Quiz using AI", async () => {
-        const result = await GenerateQuizAiModel.sendMessage(prompt);
-        return JSON.parse(result.response.text());
-      });
+      return; // Terminate function after logging error
     }
-    
-    // Save the Result
-    const DbResult = await step.run("Save Result to DB", async () => {
-      const result = await db
+
+    // Save the valid result
+    await step.run("Save Result to DB", async () => {
+      await db
         .update(STUDY_TYPE_CONTENT_TABLE)
         .set({
           content: AiResult,
           status: "Ready",
+          error: null,
         })
         .where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId));
-      return "Data Instered";
     });
   }
 );
