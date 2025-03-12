@@ -13,7 +13,7 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   const { chapters, courseId, type } = await req.json(); // get the data from the request
 
-  const PROMPT = // AI Prompt
+  const PROMPT = // AI Prompt for flashcard and quiz generation
     type == "Flashcard"
       ? "Generate the flashcard on topic : " +
         chapters +
