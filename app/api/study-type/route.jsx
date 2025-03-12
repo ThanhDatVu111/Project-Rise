@@ -20,7 +20,10 @@ export async function POST(req) {
       .select()
       .from(CHAPTER_NOTES_TABLE)
       .where(eq(CHAPTER_NOTES_TABLE?.courseId, courseId));
-
+   
+    {
+      /*content list save the quiz and chapter data from the database - STUDY_TYPE_CONTENT_TABLE*/
+    }
     const contentList = await db
       .select()
       .from(STUDY_TYPE_CONTENT_TABLE)
@@ -29,7 +32,7 @@ export async function POST(req) {
     const result = {
       notes: notes,
       flashcard: contentList?.filter((item) => item.type == "Flashcard"),
-      quiz: [],
+      quiz: contentList?.filter((item) => item.type == "Quiz"),
       qa: [],
     };
 
