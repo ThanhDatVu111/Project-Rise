@@ -9,7 +9,7 @@ import {
 const Footer = () => {
   return (
     <div>
-      <footer className="bg-gradient-to-r from-[#6f0320] to-[#a21e1d] text-white py-16">
+      <footer className="bg-gradient-to-r from-[#6f0320] to-[#a21e1d] text-white py-16 mt-12">
         <div className="container mx-auto px-6 sm:px-12 lg:px-16">
           <div className="lg:flex lg:justify-between items-center">
             {/* Left Side: Message */}
