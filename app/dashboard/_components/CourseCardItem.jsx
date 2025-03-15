@@ -18,7 +18,8 @@ function CourseCardItem({ course }) {
         </div>
 
         <h2 className="mt-3 font-medium text-lg">
-          {course?.courseLayout?.courseTitle || course?.courseLayout?.course_title}
+          {course?.courseLayout?.courseTitle ||
+            course?.courseLayout?.course_title}
         </h2>
         <p className="text-sm line-clamp-2 text-gray-500 mt-2">
           {course?.courseLayout?.summary}
@@ -31,7 +32,9 @@ function CourseCardItem({ course }) {
               Generating...
             </h2>
           ) : (
-            <Link href={"/course/" + course?.courseId}> {/* Link to the course page with the course ID when the user click view */}
+            <Link href={"/course/" + course?.courseId}>
+              {" "}
+              {/* Link to the course page with the course ID when the user click view */}
               <Button>View</Button>
             </Link>
           )}
