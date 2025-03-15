@@ -5,13 +5,13 @@ import React, { useContext, useEffect, useState } from "react";
 import CourseCardItem from "./CourseCardItem";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
-//import { CourseCountContext } from "@/app/_context/CourseCountContext";
+import { CourseCountContext } from "@/app/_context/CourseCountContext";
 
 function CourseList() {
   const { user } = useUser();
   const [courseList, setCourseList] = useState([]);
   const [loading, setLoading] = useState(false);
-  //const { totalCourse, setTotalCourse } = useContext(CourseCountContext);
+  const { totalCourse, setTotalCourse } = useContext(CourseCountContext);
 
   //useEffect will call GetCourseList whenever user changes
   //useEffect executes after the initial render or when dependencies change, which makes sense only in a client-side environment.
@@ -26,6 +26,7 @@ function CourseList() {
     });
     console.log(result);
     setCourseList(result.data.result); // takes the array of courses returned from the API and updates the state so that each course is stored as a separate item inside the courseList array.
+    setTotalCourse(result.data.result.length);
     setLoading(false);
   };
   return (
