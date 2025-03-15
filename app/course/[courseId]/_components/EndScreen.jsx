@@ -8,7 +8,7 @@ function EndScreen({ data, stepCount }) {
     <div>
       {data?.length == stepCount && (
         <div className="flex items-center gap-10 flex-col justify-center mb-11">
-          <h2>End of Notes</h2>
+          <h2>End</h2>
           <Button onClick={() => route.back()}>Go to Course Page</Button>
         </div>
       )}
