@@ -10,55 +10,48 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import FlashcardItem from "./_components/FlashcardItem";
+import { Button } from "@/components/ui/button";
 
 function Flashcards() {
   const { courseId } = useParams();
   const [flashCards, setFlashCards] = useState([]);
-  const [isFlipped, setIsFlipped] = useState();
-  const [api, setApi] = useState(); // It listens for when a user selects a new flashcard.
-  // When a new flashcard is selected, useEffect() resets the flipped state.
-  // This ensures that every new flashcard starts on the front side.
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [api, setApi] = useState(null);
 
   useEffect(() => {
     GetFlashCards();
-  }, []); // Empty array means it will run only once (when the component mounts)
+  }, []);
 
+  // Listen for carousel "select" event to know when the user navigates to a new flashcard
   useEffect(() => {
-    if (!api) {
-      return;
-    }
-    api.on("select", () => {
-      setIsFlipped(false); //// Reset flipped state when switching flashcards
+    if (!api) return;
+    api.on("select", (index) => {
+      setIsFlipped(false); // Reset flip state on new card
     });
-  }, [api]); //
+  }, [api]);
 
   const GetFlashCards = async () => {
     try {
-      console.log("Fetching flashcards for courseId:", courseId);
-
       const result = await axios.post("/api/study-type", {
         courseId: courseId,
         studyType: "Flashcard",
       });
-
-      console.log("Flashcards API Response:", result.data);
-      setFlashCards(result?.data?.content || []); // Update flashCards
-      // Log the data you're about to store in state
-      console.log("Setting flashCards with:", result?.data?.content || []);
+      console.log(result?.data);
+      setFlashCards(result?.data?.content || []);
     } catch (error) {
       console.error("Error fetching flashcards:", error);
     }
   };
 
-  const handleClick = (index) => {
-    setIsFlipped(!isFlipped); // Toggle the flip state
+  const handleClick = () => {
+    setIsFlipped((prev) => !prev);
   };
 
   return (
     <div>
       <h2 className="font-bold text-2xl">Flashcards</h2>
-      <p>Flashcards: The Ultimate Tool to Lock in Concepts!</p>
-      <div className=" mt-10">
+      <p>Flashcards: The Ultimate Tool to Lock in Concepts</p>
+      <div className="mt-10">
         <Carousel setApi={setApi}>
           <CarouselContent>
             {flashCards.map((flashcard, index) => (
@@ -78,8 +71,16 @@ function Flashcards() {
           <CarouselNext />
         </Carousel>
       </div>
+      <div className="flex justify-center mt-4">
+        <Button
+          className="flex items-center gap-2"
+          onClick={() => window.history.back()}
+        >
+          Go to Course Page
+        </Button>
+      </div>
     </div>
   );
 }
-
+//working on how to make the flaashcard directly back to the previous course page
 export default Flashcards;
