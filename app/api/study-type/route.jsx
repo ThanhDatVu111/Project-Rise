@@ -38,7 +38,10 @@ export async function POST(req) {
 
     return NextResponse.json(result);
   } else if (studyType == "notes") {
-    const notes = await db.select().from(CHAPTER_NOTES_TABLE);
+    const notes = await db
+      .select()
+      .from(CHAPTER_NOTES_TABLE)
+      .where(eq(CHAPTER_NOTES_TABLE?.courseId, courseId)); // Filter by courseId
     return NextResponse.json(notes);
   } else {
     const result = await db
