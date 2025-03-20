@@ -21,12 +21,6 @@ const Footer = () => {
                 Enter a topic and let our AI generate custom notes, flashcards,
                 and quizzes just for you.
               </p>
-              <a
-                href="/search"
-                className="text-white bg-primary hover:bg-secondary px-8 py-3 rounded-full transition duration-300"
-              >
-                Start Learning
-              </a>
             </div>
 
             {/* Right Side: Links */}
