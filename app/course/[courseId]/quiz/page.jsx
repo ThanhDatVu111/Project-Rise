@@ -64,7 +64,7 @@ function Quiz() {
     {/*Show the div that displays the correct or incorrect answer*/}
       {isCorrectAns == false && (
         <div>
-          <div className="border p-3 border-red-700 bg-red-200 rounded-lg">
+          <div className="border p-3 border-red-700 bg-red-200 rounded-lg mt-10 mb-10">
             <h2 className="font-bold text-lg text-red-600">Incorrect</h2>
             <p className="text-red-600">Correct Answer is : {correctAns}</p>
           </div>
@@ -73,7 +73,7 @@ function Quiz() {
 
       {isCorrectAns == true && (
         <div>
-          <div className="border p-3 border-green-700 bg-green-200 rounded-lg">
+          <div className="border p-3 border-green-700 bg-green-200 rounded-lg mt-10 mb-10">
             <h2 className="font-bold text-lg text-green-600">Correct</h2>
             <p className="text-green-600">Yout answer is Correct</p>
           </div>

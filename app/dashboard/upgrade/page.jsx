@@ -62,7 +62,7 @@ function Upgrade() {
       <p>Update your plan to generate unlimted courses for your exam</p>
 
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        <div className="grid md:grid-cols-1 md:gap-7 sm:grid-cols-1 sm:items-center sm:gap-4">
+        <div className="grid md:grid-cols-2 md:gap-7 sm:grid-cols-1 sm:items-center sm:gap-4">
           <div className="rounded-2xl border border-gray-200 p-6 shadow-sm sm:px-8 lg:p-12">
             <div className="text-center">
               <h2 className="text-lg font-medium text-gray-900">
